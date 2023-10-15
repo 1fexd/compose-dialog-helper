@@ -26,6 +26,7 @@ fun <T, R, S> dialogHelper(
     awaitFetchBeforeOpen: Boolean = false,
     notifyCloseNoState: Boolean = false,
     dynamicHeight: Boolean = false,
+    closeOnTapOutside: Boolean = true,
     content: @Composable (R?, OnClose<S?>) -> Unit,
 ): StateDialogConfig<T> {
     val open = remember { mutableStateOf(false) }
@@ -59,6 +60,7 @@ fun <T, R, S> dialogHelper(
             },
             awaitFetch = awaitFetchBeforeOpen,
             dynamicHeight = dynamicHeight,
+            closeOnTapOutside = closeOnTapOutside,
             content = content
         )
     }
@@ -72,6 +74,7 @@ fun <T, S> dialogHelper(
     onClose: OnClose<S?> = {},
     notifyCloseNoState: Boolean = false,
     dynamicHeight: Boolean = false,
+    closeOnTapOutside: Boolean = true,
     content: @Composable (T, OnClose<S?>) -> Unit,
 ): DialogConfig {
     val open = remember { mutableStateOf(false) }
@@ -99,6 +102,7 @@ fun <T, S> dialogHelper(
                 }
             },
             dynamicHeight = dynamicHeight,
+            closeOnTapOutside = closeOnTapOutside,
             content = content
         )
     }
@@ -112,11 +116,16 @@ private fun <T, S> Dialog(
     state: T,
     onClose: OnClose<S?>,
     dynamicHeight: Boolean,
+    closeOnTapOutside: Boolean,
     content: @Composable (T, OnClose<S?>) -> Unit,
 ) {
     Dialog(
         dynamicHeight = dynamicHeight,
-        onDismissRequest = { onClose(null) }
+        onDismissRequest = {
+            if (closeOnTapOutside) {
+                onClose(null)
+            }
+        }
     ) {
         content(state, onClose)
     }
@@ -129,6 +138,7 @@ private fun <T, R, S> Dialog(
     onClose: OnClose<S?>,
     awaitFetch: Boolean,
     dynamicHeight: Boolean,
+    closeOnTapOutside: Boolean = true,
     content: @Composable (R?, OnClose<S?>) -> Unit,
 ) {
     var fetchedState by remember { mutableStateOf<R?>(null) }
@@ -140,7 +150,11 @@ private fun <T, R, S> Dialog(
     if (!awaitFetch || fetchedState != null) {
         Dialog(
             dynamicHeight = dynamicHeight,
-            onDismissRequest = { onClose(null) }
+            onDismissRequest = {
+                if (closeOnTapOutside) {
+                    onClose(null)
+                }
+            }
         ) {
             content(fetchedState, onClose)
         }
