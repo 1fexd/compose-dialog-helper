@@ -1,8 +1,10 @@
+import de.fayard.refreshVersions.core.versionFor
+
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
     `maven-publish`
-    id("net.nemerosa.versioning") version "3.0.0"
+    id("net.nemerosa.versioning")
 }
 
 android {
@@ -13,9 +15,10 @@ android {
         minSdk = 21
     }
 
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
+    java {
+        toolchain {
+            languageVersion.set(JavaLanguageVersion.of(17))
+        }
     }
 
     buildFeatures {
@@ -23,14 +26,14 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.4.7"
+        kotlinCompilerExtensionVersion = versionFor(AndroidX.compose.compiler)
     }
 }
 
 dependencies {
-    api("androidx.compose.material3:material3:1.2.0-alpha02")
-    api("androidx.compose.runtime:runtime:1.4.3")
-    api("androidx.navigation:navigation-compose:2.5.3")
+    api(AndroidX.compose.material3)
+    api(AndroidX.compose.runtime)
+    api(AndroidX.navigation.compose)
 }
 
 publishing {
