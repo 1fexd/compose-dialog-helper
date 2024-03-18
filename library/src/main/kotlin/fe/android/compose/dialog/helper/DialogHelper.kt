@@ -1,11 +1,6 @@
 package fe.android.compose.dialog.helper
 
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.*
 
 data class StateDialogConfig<T>(
     val open: (T) -> Unit,
@@ -18,6 +13,8 @@ data class DialogConfig(
 )
 
 typealias OnClose<T> = (T) -> Unit
+
+
 
 @Composable
 fun <T, R, S> dialogHelper(
@@ -91,6 +88,7 @@ fun <T, S> dialogHelper(
             }
         )
     }
+//    AlertDialog()
 
     if (open.value) {
         Dialog<T, S>(
