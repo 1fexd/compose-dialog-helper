@@ -11,6 +11,8 @@ import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.ui.window.DialogProperties
+import fe.android.compose.dialog.helper.result.ResultDialog
+import fe.android.compose.dialog.helper.result.rememberResultDialogState
 
 
 class MainActivity : ComponentActivity() {
