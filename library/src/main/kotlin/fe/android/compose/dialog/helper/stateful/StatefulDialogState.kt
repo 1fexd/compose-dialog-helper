@@ -4,46 +4,41 @@ import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import fe.android.compose.dialog.helper.StateLessDialog
+import fe.android.compose.dialog.helper.ComposeSaver
+import fe.android.compose.dialog.helper.base.BaseResultDialogState
+import fe.android.compose.dialog.helper.base.DialogState
+import fe.android.compose.dialog.helper.createSaver
+import fe.android.compose.dialog.helper.result.ResultDialogState
+import kotlinx.coroutines.flow.MutableStateFlow
 
 @Stable
 class StatefulDialogState<T : Any, R : Any>(
-    data: T? = null,
+    private val defaultData: T,
     result: R? = null,
-) : StateLessDialog() {
-    private var dataState by mutableStateOf(data)
-    private var resultState by mutableStateOf(result)
+) : BaseResultDialogState<R>(DialogState.Closed, result) {
+    private val dataState = mutableStateOf(defaultData)
 
     internal val data: T
-        get() = dataState!!
+        get() = dataState.value
 
-    internal val result: R?
-        get() = resultState
+    fun tryGetResult(): Pair<T, R>? {
+        if (isOpen || result == null) return null
+        return data to result!!
+    }
 
-    fun open(data: T): Boolean {
+    fun open(data: T = defaultData): Boolean {
         if (isOpen) return false
-        this.dataState = data
-        this.resultState = null
+        dataState.value = data
 
-        return openInternal()
-    }
-
-    fun dismiss(): Boolean {
-        if (!isOpen) return false
-        return close()
-    }
-
-    fun close(result: R): Any {
-        if (!isOpen) return false
-        this.resultState = result
-
-        return close()
+        return super.tryOpen()
     }
 
     companion object {
-        fun <T : Any, R : Any> Saver() = androidx.compose.runtime.saveable.Saver<StatefulDialogState<T, R>, T>(
-            save = { it.dataState },
-            restore = { StatefulDialogState(it) }
-        )
+        fun <T : Any, R : Any> Saver(): ComposeSaver<StatefulDialogState<T, R>, T> {
+            return createSaver(
+                save = { it.dataState.value },
+                restore = { StatefulDialogState(it) }
+            )
+        }
     }
 }

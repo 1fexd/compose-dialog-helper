@@ -1,44 +1,32 @@
 package fe.android.compose.dialog.helper.result
 
 import androidx.compose.runtime.Stable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
-import fe.android.compose.dialog.helper.DialogState
-import fe.android.compose.dialog.helper.StateLessDialog
+import fe.android.compose.dialog.helper.ComposeSaver
+import fe.android.compose.dialog.helper.createSaver
+import fe.android.compose.dialog.helper.base.DialogState
+import fe.android.compose.dialog.helper.base.BaseResultDialogState
 
 
 @Stable
 class ResultDialogState<R : Any>(
-    initial: DialogState? = null,
     result: R? = null,
-) : StateLessDialog(initial) {
-    private var resultState by mutableStateOf(result)
+) : BaseResultDialogState<R>(DialogState.Closed, result) {
 
-    internal val result: R?
-        get() = resultState
+    fun tryGetResult(): R? {
+        if (isOpen || result == null) return null
+        return result
+    }
 
     fun open(): Boolean {
-        return openInternal()
-    }
-
-    fun dismiss(): Boolean {
-        if (!isOpen) return false
-        return close()
-    }
-
-    fun close(result: R): Any {
-        if (!isOpen) return false
-        this.resultState = result
-
-        return close()
+        return super.tryOpen()
     }
 
     companion object {
-        fun <R : Any> Saver(initial: DialogState? = null) =
-            androidx.compose.runtime.saveable.Saver<ResultDialogState<R>, R>(
+        fun <R : Any> Saver(): ComposeSaver<ResultDialogState<R>, R> {
+            return createSaver(
                 save = { it.result },
-                restore = { ResultDialogState(initial, it) }
+                restore = { ResultDialogState(it) }
             )
+        }
     }
 }

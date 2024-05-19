@@ -1,8 +1,9 @@
 package fe.android.compose.dialog.helper.result
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.saveable.rememberSaveable
-import fe.android.compose.dialog.helper.DialogState
+import fe.android.compose.dialog.helper.base.DialogState
 
 @Composable
 fun <R : Any> ResultDialog(
@@ -10,14 +11,17 @@ fun <R : Any> ResultDialog(
     onClose: (R) -> Unit,
     content: @Composable () -> Unit,
 ) {
+    LaunchedEffect(key1 = state.isOpen) {
+        val result = state.tryGetResult() ?: return@LaunchedEffect
+        onClose(result)
+    }
+
     if (state.isOpen) {
         content()
-    } else if (state.isClosed && state.result != null) {
-        onClose(state.result!!)
     }
 }
 
 @Composable
-fun <R : Any> rememberResultDialogState(initial: DialogState? = null): ResultDialogState<R> {
-    return rememberSaveable(saver = ResultDialogState.Saver()) { ResultDialogState(initial) }
+fun <R : Any> rememberResultDialogState(): ResultDialogState<R> {
+    return rememberSaveable(saver = ResultDialogState.Saver()) { ResultDialogState() }
 }
