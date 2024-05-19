@@ -45,4 +45,4 @@ android {
     }
 }
 
-publishing.publish(project, group, versioning.info.tag ?: versioning.info.full, PublicationComponent.RELEASE)
+publishing.publish(project, "com.github.1fexd",  "compose-dialog-helper",versioning.info.tag ?: versioning.info.full, PublicationComponent.RELEASE)
