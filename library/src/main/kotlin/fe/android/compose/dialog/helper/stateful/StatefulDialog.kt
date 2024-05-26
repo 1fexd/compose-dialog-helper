@@ -8,11 +8,17 @@ import androidx.compose.runtime.saveable.rememberSaveable
 fun <T : Any, R : Any> StatefulDialog(
     state: StatefulDialogState<T, R>,
     onClose: (T, R) -> Unit,
+    onDismiss: ((T) -> Unit)? = null,
     content: @Composable (T) -> Unit,
 ) {
     LaunchedEffect(key1 = state.isOpen) {
-        val (data, result) = state.tryGetResult() ?: return@LaunchedEffect
-        onClose(data, result)
+        if (state.isOpen) return@LaunchedEffect
+        if (state.result == null) {
+            onDismiss?.invoke(state.data)
+            return@LaunchedEffect
+        }
+
+        onClose(state.data, state.result!!)
     }
 
     if (state.isOpen) {

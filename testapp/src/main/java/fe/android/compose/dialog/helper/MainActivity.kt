@@ -28,9 +28,15 @@ class MainActivity : ComponentActivity() {
     }
 
     @Composable
-    private fun StatefulDialogTest(){
+    private fun StatefulDialogTest() {
         val state = rememberStatefulDialog<Boolean, Boolean>(true)
-        StatefulDialog(state = state, onClose = { input, result -> Log.d("Test", "Closed, input=$input, result=$result") }) { input ->
+        StatefulDialog(
+            state = state,
+            onClose = { input, result -> Log.d("Test", "Closed, input=$input, result=$result") },
+            onDismiss = {
+                Log.d("Test", "Dismissed: $it")
+            }
+        ) { input ->
             AlertDialog(
                 properties = DialogProperties(dismissOnClickOutside = true),
                 title = {
@@ -59,7 +65,7 @@ class MainActivity : ComponentActivity() {
     }
 
     @Composable
-    private fun ResultDialogTest(){
+    private fun ResultDialogTest() {
         val state = rememberResultDialogState<Boolean>()
         ResultDialog(state = state, onClose = { Log.d("Test", "Closed, $it") }) {
             AlertDialog(
