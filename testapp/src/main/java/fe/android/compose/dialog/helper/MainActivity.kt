@@ -23,7 +23,9 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         setContent {
-            StatefulDialogTest()
+//            StatefulDialogTest()
+            ResultDialogTest()
+
         }
     }
 
@@ -67,7 +69,11 @@ class MainActivity : ComponentActivity() {
     @Composable
     private fun ResultDialogTest() {
         val state = rememberResultDialogState<Boolean>()
-        ResultDialog(state = state, onClose = { Log.d("Test", "Closed, $it") }) {
+        ResultDialog(
+            state = state,
+            onClose = { Log.d("Test", "Closed, $it") },
+            onDismiss = { Log.d("Test", "Dismissed") }
+        ) {
             AlertDialog(
                 properties = DialogProperties(dismissOnClickOutside = true),
                 title = {

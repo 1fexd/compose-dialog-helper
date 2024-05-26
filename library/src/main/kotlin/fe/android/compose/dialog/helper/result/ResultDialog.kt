@@ -9,11 +9,17 @@ import fe.android.compose.dialog.helper.base.DialogState
 fun <R : Any> ResultDialog(
     state: ResultDialogState<R>,
     onClose: (R) -> Unit,
+    onDismiss: (() -> Unit)? = null,
     content: @Composable () -> Unit,
 ) {
     LaunchedEffect(key1 = state.isOpen) {
-        val result = state.tryGetResult() ?: return@LaunchedEffect
-        onClose(result)
+        if (state.isOpen) return@LaunchedEffect
+        if (state.result == null) {
+            onDismiss?.invoke()
+            return@LaunchedEffect
+        }
+
+        onClose(state.result!!)
     }
 
     if (state.isOpen) {
