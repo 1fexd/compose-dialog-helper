@@ -1,12 +1,12 @@
-package fe.android.compose.dialog.helper.stateful
+package fe.android.compose.dialog.helper.confirm
 
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 
 @Composable
-fun <T : Any, R : Any> StatefulDialog(
-    state: StatefulDialogState<T, R>,
-    onClose: (T, R) -> Unit,
+fun <T : Any> ConfirmActionDialog(
+    state: ConfirmActionDialogState<T>,
+    onConfirm: (T) -> Unit,
     onDismiss: ((T) -> Unit)? = null,
     content: @Composable (T) -> Unit,
 ) {
@@ -14,8 +14,8 @@ fun <T : Any, R : Any> StatefulDialog(
     LaunchedEffect(key1 = state.isOpen) {
         if (!wasEverOpen) return@LaunchedEffect
         val (data, result) = state.tryGetResult() ?: return@LaunchedEffect
-        if (result != null) {
-            onClose(data, result)
+        if (result) {
+            onConfirm(data)
         } else {
             onDismiss?.invoke(data)
         }
@@ -28,6 +28,6 @@ fun <T : Any, R : Any> StatefulDialog(
 }
 
 @Composable
-fun <T : Any, R : Any> rememberStatefulDialog(data: T): StatefulDialogState<T, R> {
-    return rememberSaveable(saver = StatefulDialogState.Saver()) { StatefulDialogState(data) }
+fun <T : Any> rememberConfirmActionDialog(): ConfirmActionDialogState<T> {
+    return rememberSaveable(saver = ConfirmActionDialogState.Saver()) { ConfirmActionDialogState() }
 }

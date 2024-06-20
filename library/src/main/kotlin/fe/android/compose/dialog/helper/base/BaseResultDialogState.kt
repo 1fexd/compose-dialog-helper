@@ -1,7 +1,6 @@
 package fe.android.compose.dialog.helper.base
 
 import androidx.compose.runtime.Stable
-import androidx.compose.runtime.mutableStateOf
 import kotlinx.coroutines.flow.MutableStateFlow
 
 @Stable
@@ -14,7 +13,7 @@ abstract class BaseResultDialogState<R : Any>(
     internal val result: R?
         get() = resultState.value
 
-    fun dismiss(): Boolean {
+    open fun dismiss(): Boolean {
         return closeInternal(null)
     }
 

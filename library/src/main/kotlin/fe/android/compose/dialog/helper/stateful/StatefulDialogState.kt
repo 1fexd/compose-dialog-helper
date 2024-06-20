@@ -8,8 +8,6 @@ import fe.android.compose.dialog.helper.ComposeSaver
 import fe.android.compose.dialog.helper.base.BaseResultDialogState
 import fe.android.compose.dialog.helper.base.DialogState
 import fe.android.compose.dialog.helper.createSaver
-import fe.android.compose.dialog.helper.result.ResultDialogState
-import kotlinx.coroutines.flow.MutableStateFlow
 
 @Stable
 class StatefulDialogState<T : Any, R : Any>(
@@ -21,9 +19,9 @@ class StatefulDialogState<T : Any, R : Any>(
     internal val data: T
         get() = dataState.value
 
-    fun tryGetResult(): Pair<T, R>? {
-        if (isOpen || result == null) return null
-        return data to result!!
+    fun tryGetResult(): Pair<T, R?>? {
+        if (isOpen) return null
+        return data to result
     }
 
     fun open(data: T = defaultData): Boolean {

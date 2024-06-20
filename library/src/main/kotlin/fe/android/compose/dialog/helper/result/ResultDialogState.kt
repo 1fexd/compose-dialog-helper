@@ -12,11 +12,6 @@ class ResultDialogState<R : Any>(
     result: R? = null,
 ) : BaseResultDialogState<R>(DialogState.Closed, result) {
 
-    fun tryGetResult(): R? {
-        if (isOpen || result == null) return null
-        return result
-    }
-
     fun open(): Boolean {
         return super.tryOpen()
     }
