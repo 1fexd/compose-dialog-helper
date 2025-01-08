@@ -24,7 +24,7 @@ android {
     }
 
     dependencies {
-        implementation(AndroidX.compose.bom)
+        implementation(platform(AndroidX.compose.bom))
         implementation(AndroidX.compose.material3)
         implementation(AndroidX.compose.ui)
         implementation(AndroidX.navigation.compose)
