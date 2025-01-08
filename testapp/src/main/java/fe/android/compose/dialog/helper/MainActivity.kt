@@ -30,6 +30,9 @@ class MainActivity : ComponentActivity() {
                 item { Text(text = "Result dialog test") }
                 item { ResultDialogTest() }
                 item { HorizontalDivider() }
+                item { Text(text = "Input result dialog test") }
+                item { InputResultDialogTest() }
+                item { HorizontalDivider() }
                 item { Text(text = "Confirm action test") }
                 item { ConfirmActionDialogTest() }
             }
