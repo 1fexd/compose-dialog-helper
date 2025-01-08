@@ -1,16 +1,17 @@
 import de.fayard.refreshVersions.core.versionFor
 
 plugins {
-    id(libs.plugins.com.android.library)
-    id(libs.plugins.org.jetbrains.kotlin.android)
+    id("com.android.library")
+    id("org.jetbrains.kotlin.android")
+    id("org.jetbrains.kotlin.plugin.compose")
+    id("net.nemerosa.versioning")
     `maven-publish`
-    id(libs.plugins.net.nemerosa.versioning)
 }
 
 val group = "fe.android.compose.dialog.helper"
 
 android {
-    namespace = group
+    namespace = group.toString()
     compileSdk = Version.COMPILE_SDK
 
     defaultConfig {
@@ -22,17 +23,9 @@ android {
 //        explicitApi()
     }
 
-    buildFeatures {
-        compose = true
-    }
-
-    composeOptions {
-        kotlinCompilerExtensionVersion = versionFor(AndroidX.compose.compiler)
-    }
-
     dependencies {
         implementation(AndroidX.compose.bom)
-        implementation("androidx.compose.material3:material3:1.2.1")
+        implementation(AndroidX.compose.material3)
         implementation(AndroidX.compose.ui)
         implementation(AndroidX.navigation.compose)
     }

@@ -1,4 +1,4 @@
-rootProject.name = "compose-dialog-helper"
+@file:Suppress("UnstableApiUsage")
 
 pluginManagement {
     repositories {
@@ -8,23 +8,29 @@ pluginManagement {
     }
 
     plugins {
-        id("de.fayard.refreshVersions") version "0.60.3"
+        id("de.fayard.refreshVersions") version "0.60.5"
+        id("com.android.library")
+        id("org.jetbrains.kotlin.android")
+        id("net.nemerosa.versioning") version "3.1.0"
     }
 }
 
-@Suppress("UnstableApiUsage")
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
         google()
         mavenCentral()
         gradlePluginPortal()
+        maven { url = uri("https://jitpack.io") }
+        maven { url = uri("https://maven.mozilla.org/maven2") }
     }
 }
 
 plugins {
     id("de.fayard.refreshVersions") version "0.60.5"
 }
+
+rootProject.name = "compose-dialog-helper"
 
 
 include("library")

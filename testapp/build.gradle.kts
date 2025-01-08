@@ -3,6 +3,7 @@ import de.fayard.refreshVersions.core.versionFor
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    id("org.jetbrains.kotlin.plugin.compose")
 }
 
 android {
@@ -35,13 +36,6 @@ android {
 
     kotlin {
         jvmToolchain(Version.JVM)
-    }
-
-    buildFeatures {
-        compose = true
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion = versionFor(AndroidX.compose.compiler)
     }
 
     packaging {
